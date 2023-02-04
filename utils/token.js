@@ -1,4 +1,5 @@
 const { default: axios } = require("axios");
+const { auth } = require("express-oauth2-jwt-bearer");
 const { auth0ClientSecret, auth0Domain, auth0ClientID } = require("../config");
 
 const getToken = () => {
@@ -18,4 +19,11 @@ const getToken = () => {
   return axios.post(requestURL, requestBody, { headers });
 };
 
-module.exports = { getToken };
+const verifyToken =
+  auth({
+    issuerBaseURL: auth0Domain,
+    audience: `${auth0Domain}/api/v2/`
+  });
+
+
+module.exports = { getToken, verifyToken };
