@@ -19,11 +19,12 @@ const getToken = () => {
   return axios.post(requestURL, requestBody, { headers });
 };
 
-const verifyToken =
+const verifyToken = (next) => {
+  if (process.env.NODE_END === "test") next();
   auth({
     issuerBaseURL: auth0Domain,
     audience: `${auth0Domain}/api/v2/`
   });
-
+};
 
 module.exports = { getToken, verifyToken };
