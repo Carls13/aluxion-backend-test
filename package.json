@@ -29,9 +29,14 @@
     "mongoose": "^6.9.0",
     "node-fetch": "^2.6.9",
     "nodemailer": "^6.9.1",
-    "unsplash-js": "^7.0.15"
+    "swagger-ui-express": "^4.6.0",
+    "unsplash-js": "^7.0.15",
+    "validatorjs": "^3.22.1"
   },
   "devDependencies": {
-    "nodemon": "^2.0.20"
+    "jest": "^29.4.1",
+    "nodemon": "^2.0.20",
+    "superagent": "^8.0.9",
+    "supertest": "^6.3.3"
   }
 }

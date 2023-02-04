@@ -19,7 +19,7 @@ exports.success = (req, res, message, code) => {
 exports.error = (req, res, message, code, error) => {
     console.error(error);
     res.status(code || 500).send({
-        error: mapStatusCodeMessage(code),
-        body: message
+        error: message || mapStatusCodeMessage(code),
+        body: ''
     });
 }

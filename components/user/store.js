@@ -18,15 +18,6 @@ const findUserByEmail = async (email) => {
   return user;
 };
 
-const getUserDetails = async (email) => {
-  const user = await userModel
-    .findOne({ email })
-    .select("email username")
-    .exec();
-
-  return user;
-};
-
 const saveNewPassword = async (email, newPassword) => {
   const salt = bcrypt.genSaltSync(10);
   const hashedPassword = bcrypt.hashSync(newPassword, salt);
@@ -50,6 +41,5 @@ const saveNewPassword = async (email, newPassword) => {
 module.exports = {
   addUser,
   findUserByEmail,
-  getUserDetails,
   saveNewPassword,
 };

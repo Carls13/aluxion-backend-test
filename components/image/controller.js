@@ -5,7 +5,7 @@ const unsplashClient = require('../../utils/unsplash');
 
 const fs = require('fs').promises;
 
-const listImages = (page, limit, search) => {
+const listImages = (page = 1, limit = 10, search) => {
     return new Promise(async (resolve, reject) => {
         try {
             const request = await unsplashClient.search.getPhotos({
