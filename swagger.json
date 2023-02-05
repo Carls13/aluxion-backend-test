@@ -1,0 +1,218 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "description": "Aluxion Backend Test",
+    "version": "1.0.0",
+    "title": "Aluxion Backend Test"
+  },
+  "definitions": {
+    "limit": {
+      "type": "integer",
+      "description": "Cantidad de registros por página que se desean ver",
+      "example": 15
+    },
+    "page": {
+      "type": "integer",
+      "description": "Página que se desea ver",
+      "example": 1
+    },
+    "search": {
+      "type": "string",
+      "description": "Search query",
+      "example": "Dogs"
+    },
+    "User": {
+      "type": "object",
+      "properties": {
+        "username": {
+          "type": "string",
+          "description": "Username",
+          "example": "Carlos"
+        },
+        "email": {
+          "type": "string",
+          "description": "Email",
+          "example": "prueba@gmail.com"
+        },
+        "password": {
+          "type": "string",
+          "description": "Password",
+          "example": "12345"
+        }
+      }
+    },
+    "Login": {
+      "type": "object",
+      "properties": {
+        "email": {
+          "type": "string",
+          "description": "Email",
+          "example": "prueba@gmail.com"
+        },
+        "password": {
+          "type": "string",
+          "description": "Password",
+          "example": "12345"
+        }
+      }
+    },
+    "ForgotPassword": {
+      "type": "object",
+      "properties": {
+        "email": {
+          "type": "string",
+          "description": "Email",
+          "example": "prueba@gmail.com"
+        }
+      }
+    },
+    "ApiResponse": {
+      "type": "object",
+      "properties": {
+        "error": {
+          "type": "string"
+        },
+        "body": {
+          "type": "object"
+        }
+      }
+    }
+  },
+  "host": "localhost:3000",
+  "basePath": "/",
+  "tags": [
+    {
+      "name": "user",
+      "description": "Users that are registered in the system"
+    },
+    {
+      "name": "image",
+      "description": "Images from Unsplash API and from Amazon's S3 Bucket (INCOMPLETE)"
+    }
+  ],
+  "schemes": ["http"],
+  "paths": {
+    "/user": {
+      "post": {
+        "tags": ["user"],
+        "summary": "Register",
+        "operationId": "postUser",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "User",
+            "description": "User data",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/User"
+            }
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": "Token"
+          }
+        }
+      }
+    },
+    "/user/login": {
+      "post": {
+        "tags": ["user"],
+        "summary": "User login",
+        "operationId": "userLogin",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "Login",
+            "description": "Login",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Login"
+            }
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": "Token"
+          }
+        }
+      }
+    },
+    "/user/forgot-password": {
+      "post": {
+        "tags": ["user"],
+        "summary": "Forgot password",
+        "operationId": "forgotPassword",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "ForgotPassword",
+            "description": "ForgotPassword",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/ForgotPassword"
+            }
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": "Email sent"
+          }
+        }
+      }
+    },
+    "/image": {
+      "get": {
+        "tags": ["image"],
+        "summary": "List images from Unsplash",
+        "operationId": "listImages",
+        "parameters": [
+          {
+            "name": "limit",
+            "in": "query",
+            "schema": {
+              "$ref": "#/definitions/limit"
+            },
+            "required": true,
+            "description": "Records per page"
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "schema": {
+              "$ref": "#/definitions/page"
+            },
+            "required": true,
+            "description": "Page"
+          },
+          {
+            "name": "search",
+            "in": "query",
+            "schema": {
+              "$ref": "#/definitions/search"
+            },
+            "required": true,
+            "description": "Search query"
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": "Requested images"
+          }
+        }
+      }
+    },
+    "/image/bucket": {
+      "get": {
+        "tags": ["image"],
+        "summary": "List images from Amazon S3 Bucket",
+        "operationId": "listBucketImages",
+        "responses": {
+          "default": {
+            "description": "Requested images from bucket" 
+          }
+        }
+      }
+    }
+  }
+}

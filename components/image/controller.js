@@ -30,9 +30,10 @@ const listImagesFromBucket = () => {
             const params = {
                 Bucket: s3Bucket, 
             };
+
             s3.listObjectsV2(params, function(s3Err, data) {
                 if (s3Err) {
-                    throw s3Err;
+                    reject(s3Err.message);
                 };
                 resolve({
                     images: data.Contents,
@@ -54,7 +55,7 @@ const downloadBucketImage = (imageKey, location) => {
             };
             s3.getObject(params, async function(s3Err, data) {
                 if (s3Err) {
-                    throw s3Err;
+                    reject(s3Err.message);
                 };
 
                 const { Body } = data;
@@ -70,17 +71,44 @@ const downloadBucketImage = (imageKey, location) => {
     });
 };
 
+const updateBucketFileName = (imageKey, newFileName) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            const params = {
+                Key: newFileName,
+                Bucket: s3Bucket,
+                CopySource: `/${s3Bucket}/${imageKey}`,
+                ACL: 'public-read',
+            };
+
+            s3.copyObject(params, function(s3Err, data) {
+                if (s3Err) {
+                    reject(s3Err.message);
+                };
+
+                const newURL = `https://${s3Bucket}.s3.eu-west-1.amazonaws.com/${newFileName}`;
+
+                resolve({
+                    imageURL: newURL,
+                });
+            });
+        } catch (e) {
+            console.log('thIS',e);
+            reject(e.message);
+        }
+    });
+};
+
 const uploadImage = (imageData, imageName) => {
     return new Promise(async (resolve, reject) => {
         try {
-            const imageType = imageData.split(';')[0].split('/')[1];
+            const buf = new Buffer(imageData.replace(/^data:image\/\w+;base64,/, ""),'base64');
+
             const params = {
                 Bucket: s3Bucket, 
                 Key: imageName, 
-                Body: imageData,
+                Body: buf,
                 ACL: 'public-read',
-                ContentEncoding: 'base64',
-                ContentType: `image/${imageType}` 
             };
             s3.upload(params, function(s3Err, data) {
                 if (s3Err) {
@@ -121,7 +149,7 @@ const uploadUnsplashImageToBucket = (imageId, imageName) => {
 
             s3.upload(params, function(s3Err, data) {
                 if (s3Err) {
-                    throw s3Err;
+                    reject(s3Err.message);
                 };
                 console.log(`File uploaded successfully at ${data?.Location}`)
                 resolve({
@@ -140,4 +168,5 @@ module.exports = {
     listImagesFromBucket,
     uploadUnsplashImageToBucket,
     downloadBucketImage,
+    updateBucketFileName,
 };

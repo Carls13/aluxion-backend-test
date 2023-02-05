@@ -75,6 +75,35 @@ router.get("/bucket/:key", verifyToken, (req, res) => {
     .catch((errorMessage) => error(req, res, errorMessage, 500));
 });
 
+router.put("/bucket/:key", verifyToken, (req, res) => {
+  const { key } = req.params;
+  const { newFileName } = req.body;
+
+  const validationRules = {
+    key: "required|string",
+    newFileName: "required|string",
+  };
+
+  let validation = new Validator({ key, newFileName }, validationRules);
+
+  if (validation.fails()) {
+    error(req, res, "Invalid data", 400, new Error("Invalid data"));
+    return;
+  }
+
+  controller
+    .updateBucketFileName(key, newFileName)
+    .then((data) =>
+      success(
+        req,
+        res,
+        data,
+        200
+      )
+    )
+    .catch((errorMessage) => error(req, res, errorMessage, 500));
+});
+
 router.post("/", verifyToken, (req, res) => {
   const { imageName, imageData } = req.body;
 

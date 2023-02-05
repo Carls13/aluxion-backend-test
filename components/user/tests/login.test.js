@@ -15,7 +15,7 @@ describe("POST /user/login should", () => {
   it("send 400 when no body is sent", () => {
     return request(app)
       .post("/user/login")
-      .then(() => callbackStatusCodeError(400));
+      .then((response) => callbackStatusCodeError(response, 400));
   }, TIMEOUT);
 
   it("send 400 when sending incorrect email", () => {
@@ -24,7 +24,7 @@ describe("POST /user/login should", () => {
       .send({
         email: "hello"
       })
-      .then(() => callbackStatusCodeError(400));
+      .then((response) => callbackStatusCodeError(response, 400));
   }, TIMEOUT);
 
   it("send 401 when sending incorrect password", () => {
@@ -34,6 +34,6 @@ describe("POST /user/login should", () => {
         email: `charlesshb98@gmail.com`,
         password: 'incorrect-password'
       })
-      .then(() => callbackStatusCodeError(401));
+      .then((response) => callbackStatusCodeError(response, 401));
   }, TIMEOUT);
 });

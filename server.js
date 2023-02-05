@@ -1,10 +1,8 @@
-const server = require("http").Server(app);
-
-const router = require('./network/routes');
 const config = require("./config");
 const app = require("./app");
+const server = require("http").Server(app);
 
-router(app);
+const db = require('./db');
 
 db();
 

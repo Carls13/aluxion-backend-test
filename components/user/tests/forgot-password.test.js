@@ -15,7 +15,7 @@ describe("POST /user/forgot-password should", () => {
   it("send 400 when no body is sent", () => {
     return request(app)
       .post("/user/forgot-password")
-      .then(() => callbackStatusCodeError(400));
+      .then((response) => callbackStatusCodeError(response, 400));
   }, TIMEOUT);
 
   it("send 400 when sending incorrect email", () => {
@@ -24,7 +24,7 @@ describe("POST /user/forgot-password should", () => {
       .send({
         email: "hello"
       })
-      .then(() => callbackStatusCodeError(400));
+      .then((response) => callbackStatusCodeError(response, 400));
   }, TIMEOUT);
 
   it("send 401 when trying to get a password using a not registered email", () => {
@@ -33,6 +33,6 @@ describe("POST /user/forgot-password should", () => {
       .send({
         email: `inexistent@gmail.com`,
       })
-      .then(() => callbackStatusCodeError(401));
+      .then((response) => callbackStatusCodeError(response, 401));
   }, TIMEOUT);
 });
