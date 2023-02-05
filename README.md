@@ -1,4 +1,4 @@
-#Instructions
+## Instructions
 
 1. Install packages using `npm install`
 
